@@ -1,4 +1,4 @@
-<img src="[https://github.com/user-attachments/assets/311a3983-f518-4410-8429-bc025f07f575](https://alexis-sgl.fr/wp-content/uploads/2026/01/logo_CESI_projet_etudiant_NB.png)" alt="Logo CESI" width="100" align="right" />
+<img src="https://alexis-sgl.fr/wp-content/uploads/2026/01/logo_CESI_projet_etudiant_NB.png" alt="Logo CESI" width="100" align="right" />
 <br><br>
 
 
