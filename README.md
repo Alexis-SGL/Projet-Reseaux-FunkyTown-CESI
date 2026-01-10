@@ -93,7 +93,7 @@ Infrastructure réseau complète reliant **4 organisations** via un datacenter, 
 ![VLANs](https://img.shields.io/badge/Network-VLANs-green?style=flat-square)
 ![SSH](https://img.shields.io/badge/Security-SSH-red?style=flat-square)
 
-**Équipements** : Routeurs Cisco 2911 • Switches 2960/3560  
+**Équipements** : Routeurs Cisco • Switches  
 **Protocoles** : IPv4/IPv6 • SSH • DHCP • DNS • NAT • VTP • LACP  
 
 ---
