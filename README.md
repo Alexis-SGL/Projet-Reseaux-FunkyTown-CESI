@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/311a3983-f518-4410-8429-bc025f07f575" alt="Logo 3W" width="100" align="right" />
+<img src="https://github.com/user-attachments/assets/311a3983-f518-4410-8429-bc025f07f575" alt="Logo CESI" width="100" align="right" />
 <br><br>
 
 
