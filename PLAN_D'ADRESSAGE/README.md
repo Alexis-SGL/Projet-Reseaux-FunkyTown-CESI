@@ -111,34 +111,6 @@
 
 ---
 
-## 📈 Synthèse par Catégorie
-
-### Réseaux Privés (RFC 1918)
-```
-192.168.0.0/16  → Réseaux locaux des 4 sites
-```
-
-### Réseaux Publics Simulés
-```
-101.0.0.0/30    → eXia ↔ Internet
-102.0.0.0/30    → Bibliothèque ↔ Internet
-103.0.0.0/30    → ENGIE ↔ Internet
-104.0.0.0/30    → DIGIPLEX ↔ Internet
-80.0.0.0/16     → Infrastructure Datacenter FAI
-8.8.8.0/24      → DNS Public (Google)
-108.177.127.0/24 → Serveur Google
-90.154.127.0/24  → Réseau Cloud Meraki
-```
-
-### IPv6 (RFC 3849 - Documentation)
-```
-2001:DB8:1000::/64 → Cloud Meraki
-2001:DB8:2000::/64 → Bureau eXia
-2001:DB8:3000::/64 → Tunnel 6in4
-```
-
----
-
 ## 🎯 Statistiques Réseau
 
 ### Par Type de Réseau
