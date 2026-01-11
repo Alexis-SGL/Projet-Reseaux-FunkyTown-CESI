@@ -19,43 +19,33 @@
 ## Configuration du Routeur DSLAM
 
 Le routeur DSLAM centralise les connexions de tous les bâtiments et leur fournit un accès vers Internet via le datacenter.
-
-### Configuration du nom
 ```cisco
 Router>enable
 Router#conf t
 Router(config)#hostname Routeur_DSLAM
-```
 
-### VERS DIGIPLEX (Port G0/0/0) - Réseau : 104.0.0.0 /30
-```cisco
+# VERS DIGIPLEX (G0/0/0) - 104.0.0.0/30
 Routeur_DSLAM(config)#interface G0/0/0
 Routeur_DSLAM(config-if)#description Vers_DIGIPLEX
 Routeur_DSLAM(config-if)#ip address 104.0.0.1 255.255.255.252
 Routeur_DSLAM(config-if)#no shutdown
 Routeur_DSLAM(config-if)#exit
-```
 
-### VERS EXIA (Port G0/1/0) - Réseau : 101.0.0.0 /30
-```cisco
+# VERS EXIA (G0/1/0) - 101.0.0.0/30
 Routeur_DSLAM(config)#interface G0/1/0
 Routeur_DSLAM(config-if)#description Vers_EXIA
 Routeur_DSLAM(config-if)#ip address 101.0.0.1 255.255.255.252
 Routeur_DSLAM(config-if)#no shutdown
 Routeur_DSLAM(config-if)#exit
-```
 
-### VERS BIBLIOTHEQUE (Port G0/2/0) - Réseau : 102.0.0.0 /30
-```cisco
+# VERS BIBLIOTHEQUE (G0/2/0) - 102.0.0.0/30
 Routeur_DSLAM(config)#interface G0/2/0
 Routeur_DSLAM(config-if)#description Vers_BIBLIOTHEQUE
 Routeur_DSLAM(config-if)#ip address 102.0.0.1 255.255.255.252
 Routeur_DSLAM(config-if)#no shutdown
 Routeur_DSLAM(config-if)#exit
-```
 
-### VERS ENGIE (Port G0/3/0) - Réseau : 103.0.0.0 /30
-```cisco
+# VERS ENGIE (G0/3/0) - 103.0.0.0/30
 Routeur_DSLAM(config)#interface G0/3/0
 Routeur_DSLAM(config-if)#description Vers_ENGIE
 Routeur_DSLAM(config-if)#ip address 103.0.0.1 255.255.255.252
@@ -127,7 +117,7 @@ Routeur_DIGIPLEX(config)#ip route 0.0.0.0 0.0.0.0 104.0.0.1
 
 ## Configuration des Tables de Routage dans le Datacenter
 
-Le datacenter est composé de plusieurs routeurs FAI qui acheminent le trafic entre le DSLAM et Internet (WAN).
+> **Note :** Les routeurs du datacenter ont le protocole OSPF activé afin d'apprendre automatiquement les sous-réseaux internes et de choisir le chemin optimal pour le trafic interne. Cependant, nous pouvons configurer des routes statiques afin de contrôler précisément le chemin emprunté.
 
 ### DSLAM
 
@@ -190,37 +180,6 @@ Routeur_WAN(config)#ip route 0.0.0.0 0.0.0.0 80.0.0.1
 ```
 
 ---
-
-## Architecture Réseau - Partie 1
-
-### Plan d'adressage WAN
-
-| Liaison | Réseau | Interface DSLAM | Interface Client |
-|---------|--------|-----------------|------------------|
-| DSLAM ↔ DIGIPLEX | 104.0.0.0/30 | 104.0.0.1 | 104.0.0.2 |
-| DSLAM ↔ EXIA | 101.0.0.0/30 | 101.0.0.1 | 101.0.0.2 |
-| DSLAM ↔ BIBLIOTHEQUE | 102.0.0.0/30 | 102.0.0.1 | 102.0.0.2 |
-| DSLAM ↔ ENGIE | 103.0.0.0/30 | 103.0.0.1 | 103.0.0.2 |
-
-### Topologie Datacenter
-```
-Bâtiments → DSLAM → FAI1 → FAI2 → WAN → Internet
-```
-
-### Équipements
-
-- **Routeur DSLAM :** Point de concentration des connexions
-- **Routeurs clients :** Routeur_eXia, Routeur_Bibliotheque, Routeur_ENGIE, Routeur_DIGIPLEX
-- **Routeurs FAI :** FAI1, FAI2
-- **Routeur WAN :** Sortie vers Internet
-
-### Technologies
-
-- **NAT :** Configuré sur tous les routeurs clients
-- **Routage statique :** Tables de routage manuelles dans le datacenter
-- **Agrégation de routes :** Réseau 100.0.0.0/8 pour tous les clients
-
----
 ---
 
 # Partie 2 : Tunnel IPv6 ESN eXia vers Cloud
@@ -229,7 +188,7 @@ Bâtiments → DSLAM → FAI1 → FAI2 → WAN → Internet
 
 Avant de configurer le tunnel IPv6, il faut s'assurer que la connectivité IPv4 est établie entre ESN eXia et le serveur Meraki dans le cloud.
 
-> **Important :** Le tunnel IPv6 encapsule le trafic IPv6 dans des paquets IPv4 pour traverser Internet.
+> **Important :** Le tunnel IPv6 encapsule le trafic IPv6 dans des paquets IPv4 pour traverser Internet. Une fois que l'IPv4 permet d'atteindre le réseau du serveur Meraki, on peut mettre en place le tunnel IPv6.
 
 ---
 
@@ -249,6 +208,8 @@ Avant de configurer le tunnel IPv6, il faut s'assurer que la connectivité IPv4 
 ---
 
 ## Configuration IPv4 pour atteindre le Cloud
+
+> **Note :** Les routeurs du datacenter ont le protocole OSPF activé afin d'apprendre automatiquement les sous-réseaux internes et de choisir le chemin optimal pour le trafic interne. Cependant, nous pouvons configurer des routes statiques afin de contrôler précisément le chemin emprunté.
 
 Avant de créer le tunnel IPv6, il faut configurer les routes IPv4 pour que le réseau eXia puisse atteindre le serveur Meraki.
 
@@ -296,13 +257,13 @@ Routeur_FAI5(config)#ip route 0.0.0.0 0.0.0.0 80.0.0.26
 Routeur_Meraki(config)#ip route 0.0.0.0 0.0.0.0 90.154.127.254
 ```
 
-> **Note :** Une fois que l'IPv4 permet d'atteindre le réseau du serveur Meraki (ping réussi), on peut mettre en place le tunnel IPv6.
-
 ---
 
 ## Configuration du Tunnel IPv6
 
 ### 1. Configuration du Routeur ESN eXia (Côté Bureau)
+
+On va d'abord activer l'IPv6, puis lancer le tunnel vers le Cloud.
 
 #### Activation de l'IPv6
 ```cisco
@@ -313,7 +274,7 @@ Routeur_eXia(config)#ipv6 unicast-routing
 
 #### Configuration du réseau local IPv6
 
-On ajoute l'IPv6 sur le réseau interne en plus de l'IPv4 existante.
+C'est ici qu'on ajoute l'IPv6 sur le réseau interne en plus de l'IPv4 existante.
 ```cisco
 Routeur_eXia(config)#interface FastEthernet0/0
 Routeur_eXia(config-if)#ipv6 address 2001:DB8:2000::1/64
@@ -340,6 +301,8 @@ Routeur_eXia(config)#ipv6 route 2001:DB8:1000::/64 2001:DB8:3000::2
 ---
 
 ### 2. Configuration du Routeur Meraki (Côté Cloud)
+
+Maintenant, on configure l'autre bout pour qu'il réceptionne la connexion.
 
 #### Activation de l'IPv6
 ```cisco
@@ -391,30 +354,7 @@ L'auto-configuration IPv6 (SLAAC) permettra au PC d'obtenir automatiquement une 
 
 ## Tests de Connectivité
 
-### Test 1 : Vérifier la connectivité IPv4 (avant tunnel)
-
-Depuis un PC dans le réseau eXia :
-```bash
-ping 90.154.127.203
-```
-
-**Résultat attendu :** Réponse réussie → la connectivité IPv4 est établie.
-
----
-
-### Test 2 : Vérifier le tunnel IPv6
-
-Depuis le routeur eXia :
-```cisco
-Routeur_eXia#show ipv6 interface brief
-Routeur_eXia#show interface tunnel 0
-```
-
-**Résultat attendu :** Interface Tunnel0 up/up
-
----
-
-### Test 3 : Ping IPv6 vers le serveur Meraki
+### Test de connectivité IPv6
 
 Depuis un PC Bureau eXia (avec IPv6 auto-configuré) :
 ```bash
@@ -425,40 +365,15 @@ ping 2001:DB8:1000::1
 
 ---
 
-## Architecture du Tunnel - Partie 2
+## Technologies Utilisées
 
-### Schéma de connectivité
-```
-PC Bureau eXia (IPv6: 2001:DB8:2000::x)
-    ↓
-Routeur_eXia (Interface LAN IPv6: 2001:DB8:2000::1)
-    ↓
-Tunnel0 (IPv6: 2001:DB8:3000::1) ← Encapsulation IPv6 dans IPv4
-    ↓
-Internet (IPv4: 101.0.0.2 → 90.154.127.203)
-    ↓
-Tunnel0 (IPv6: 2001:DB8:3000::2) ← Décapsulation
-    ↓
-Routeur_Meraki (Interface Cloud IPv6: 2001:DB8:1000::254)
-    ↓
-Serveur Meraki (IPv6: 2001:DB8:1000::1)
-```
+### Partie 1 - Connectivité Internet
+- **NAT :** Configuré sur tous les routeurs clients
+- **Routage statique :** Tables de routage manuelles dans le datacenter
+- **OSPF :** Protocole de routage dynamique pour l'apprentissage automatique des routes internes
+- **Agrégation de routes :** Réseau 100.0.0.0/8 pour tous les clients
 
-### Plan d'adressage IPv6
-
-| Équipement | Interface | Adresse IPv6 |
-|------------|-----------|--------------|
-| PC Bureau eXia | Ethernet | 2001:DB8:2000::x (auto) |
-| Routeur eXia LAN | Fa0/0 | 2001:DB8:2000::1/64 |
-| Routeur eXia Tunnel | Tunnel0 | 2001:DB8:3000::1/64 |
-| Routeur Meraki Tunnel | Tunnel0 | 2001:DB8:3000::2/64 |
-| Routeur Meraki Cloud | G0/2/0 | 2001:DB8:1000::254/64 |
-| Serveur Meraki | Ethernet | 2001:DB8:1000::1/64 |
-
----
-
-## Technologies Utilisées - Partie 2
-
+### Partie 2 - Tunnel IPv6
 - **Tunnel IPv6 over IPv4 (6in4) :** Encapsulation IPv6 dans IPv4
 - **SLAAC :** Auto-configuration sans état pour les clients IPv6
 - **Routage statique IPv6 :** Routes manuelles sur les routeurs
