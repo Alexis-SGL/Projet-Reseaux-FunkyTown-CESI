@@ -74,6 +74,7 @@ Routeur_ENGIE(config)#interface vlan 10
 Routeur_ENGIE(config-if)#ip address 192.168.0.126 255.255.255.128
 Routeur_ENGIE(config-if)#ip helper-address 192.168.0.225
 Routeur_ENGIE(config-if)#no shutdown
+Routeur_ENGIE(config-if)#ip nat inside
 Routeur_ENGIE(config-if)#exit
 ```
 
@@ -83,6 +84,7 @@ Routeur_ENGIE(config)#interface vlan 11
 Routeur_ENGIE(config-if)#ip address 192.168.0.190 255.255.255.192
 Routeur_ENGIE(config-if)#ip helper-address 192.168.0.225
 Routeur_ENGIE(config-if)#no shutdown
+Routeur_ENGIE(config-if)#ip nat inside
 Routeur_ENGIE(config-if)#exit
 ```
 
@@ -92,6 +94,7 @@ Routeur_ENGIE(config)#interface vlan 12
 Routeur_ENGIE(config-if)#ip address 192.168.0.222 255.255.255.224
 Routeur_ENGIE(config-if)#ip helper-address 192.168.0.225
 Routeur_ENGIE(config-if)#no shutdown
+Routeur_ENGIE(config-if)#ip nat inside
 Routeur_ENGIE(config-if)#exit
 ```
 
